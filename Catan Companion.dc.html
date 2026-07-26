@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: #0b1a24; -webkit-font-smoothing: antialiased; }
+  a { color: #e0b23c; text-decoration: none; }
+  a:hover { color: #f2ce6a; }
+  button { font-family: 'IBM Plex Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+  ::selection { background: #e0b23c; color: #0b1a24; }
+  .noscroll::-webkit-scrollbar { display: none; }
+  @keyframes shimmer { 0%,100% { opacity: .35; } 50% { opacity: .6; } }
+</style>
+</helmet>
+
+<div style="background:#0b1a24; font-family:'IBM Plex Sans',sans-serif; color:#e8ddc6;">
+
+  <div style="position:relative; overflow:hidden; background:radial-gradient(130% 100% at 50% 0%, #1d4361 0%, #12293b 46%, #0b1a24 100%); padding:clamp(28px,6vw,70px) clamp(16px,4vw,56px) clamp(24px,4vw,44px);">
+    <div style="position:absolute; inset:0; opacity:.5; animation:shimmer 9s ease-in-out infinite; background-image:radial-gradient(circle at 12% 22%, rgba(224,178,60,.13) 0 2px, transparent 3px), radial-gradient(circle at 80% 16%, rgba(224,178,60,.1) 0 2px, transparent 3px), radial-gradient(circle at 44% 80%, rgba(224,178,60,.08) 0 2px, transparent 3px);"></div>
+    <div style="position:relative; max-width:1180px; margin:0 auto;">
+      <div style="display:inline-flex; align-items:center; gap:9px; padding:6px 14px; border:1px solid rgba(224,178,60,.4); border-radius:999px; background:rgba(224,178,60,.08); font-size:clamp(10.5px,1.4vw,12.5px); font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:#e0b23c;">
+        <span style="width:6px; height:6px; border-radius:999px; background:#e0b23c; display:block;"></span>
+        3D-Printed Magnetic Set
+      </div>
+      <h1 style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:clamp(31px,7.6vw,70px); line-height:1; letter-spacing:-0.03em; margin:16px 0 0; color:#fdf6e6;">Ervin's Catan Companion</h1>
+      <p style="font-size:clamp(15px,2vw,19px); line-height:1.5; max-width:600px; margin:14px 0 0; color:#a9c0d1; text-wrap:pretty;">Pick your game, deal a balanced board, and keep the rules in your pocket.</p>
+
+      <div style="margin-top:clamp(20px,3.4vw,32px); background:rgba(8,20,29,.55); border:1px solid rgba(255,255,255,.12); border-radius:20px; padding:clamp(15px,2.4vw,24px);">
+        <div style="font-size:11.5px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:#e0b23c; margin-bottom:15px;">Set up your game</div>
+        <div style="display:flex; flex-wrap:wrap; gap:clamp(14px,2.4vw,28px);">
+          <div style="flex:1 1 170px; min-width:158px;">
+            <div style="font-size:12.5px; font-weight:600; color:#7e97aa; letter-spacing:.06em; text-transform:uppercase; margin-bottom:9px;">Players</div>
+            <div style="display:flex; gap:8px;">
+              <sc-for list="{{ playerOpts }}" as="o" hint-placeholder-count="2">
+                <button type="button" onClick="{{ o.pick }}" style="flex:1; min-height:50px; padding:12px 8px; border-radius:13px; cursor:pointer; font-size:16px; font-weight:700; background:{{ o.bg }}; color:{{ o.fg }}; border:1.5px solid {{ o.bd }};">{{ o.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+          <div style="flex:1 1 220px; min-width:200px;">
+            <div style="font-size:12.5px; font-weight:600; color:#7e97aa; letter-spacing:.06em; text-transform:uppercase; margin-bottom:9px;">Game</div>
+            <div style="display:flex; gap:8px;">
+              <sc-for list="{{ gameOpts }}" as="o" hint-placeholder-count="2">
+                <button type="button" onClick="{{ o.pick }}" style="flex:1; min-height:50px; padding:12px 8px; border-radius:13px; cursor:pointer; font-size:16px; font-weight:700; background:{{ o.bg }}; color:{{ o.fg }}; border:1.5px solid {{ o.bd }};">{{ o.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+          <div style="flex:1 1 190px; min-width:178px;">
+            <div style="font-size:12.5px; font-weight:600; color:#7e97aa; letter-spacing:.06em; text-transform:uppercase; margin-bottom:9px;">Cities &amp; Knights</div>
+            <div style="display:flex; gap:8px;">
+              <sc-for list="{{ ckOpts }}" as="o" hint-placeholder-count="2">
+                <button type="button" onClick="{{ o.pick }}" style="flex:1; min-height:50px; padding:12px 8px; border-radius:13px; cursor:pointer; font-size:16px; font-weight:700; background:{{ o.bg }}; color:{{ o.fg }}; border:1.5px solid {{ o.bd }};">{{ o.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:16px 26px; margin-top:clamp(17px,2.3vw,23px); padding-top:clamp(15px,2.1vw,19px); border-top:1px solid rgba(255,255,255,.1);">
+          <div><div style="font-family:'Space Grotesk',sans-serif; font-size:clamp(21px,3.4vw,29px); font-weight:700; color:#e0b23c; line-height:1;">{{ landTotal }}</div><div style="font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:#7e97aa; margin-top:5px;">Land hexes</div></div>
+          <div><div style="font-family:'Space Grotesk',sans-serif; font-size:clamp(21px,3.4vw,29px); font-weight:700; color:#e0b23c; line-height:1;">{{ numTotal }}</div><div style="font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:#7e97aa; margin-top:5px;">Number tokens</div></div>
+          <div><div style="font-family:'Space Grotesk',sans-serif; font-size:clamp(21px,3.4vw,29px); font-weight:700; color:#e0b23c; line-height:1;">{{ harborTotal }}</div><div style="font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:#7e97aa; margin-top:5px;">Harbors</div></div>
+          <div><div style="font-family:'Space Grotesk',sans-serif; font-size:clamp(21px,3.4vw,29px); font-weight:700; color:#e0b23c; line-height:1;">{{ vpTarget }}</div><div style="font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:#7e97aa; margin-top:5px;">VP to win</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="position:sticky; top:0; z-index:30; background:rgba(11,26,36,.95); backdrop-filter:blur(14px); border-top:1px solid rgba(255,255,255,.09); border-bottom:1px solid rgba(255,255,255,.09);">
+    <div style="max-width:1180px; margin:0 auto; padding:9px clamp(10px,3vw,32px);">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div style="flex-shrink:0; font-family:'Space Grotesk',sans-serif; font-size:12px; font-weight:700; color:#e0b23c; letter-spacing:.03em; white-space:nowrap; padding-right:10px; border-right:1px solid rgba(255,255,255,.13);">{{ configLabel }}</div>
+        <div class="noscroll" style="display:flex; gap:7px; overflow-x:auto; scrollbar-width:none; -webkit-overflow-scrolling:touch; padding:1px 0;">
+          <a href="#board" style="flex:0 0 auto; min-height:42px; display:inline-flex; align-items:center; padding:10px 17px; border-radius:999px; font-size:14.5px; font-weight:600; white-space:nowrap; background:rgba(224,178,60,.14); color:#e0b23c; border:1px solid rgba(224,178,60,.4);">Board</a>
+          <a href="#terrain" style="flex:0 0 auto; min-height:42px; display:inline-flex; align-items:center; padding:10px 17px; border-radius:999px; font-size:14.5px; font-weight:600; white-space:nowrap; background:rgba(255,255,255,.05); color:#a9c0d1; border:1px solid rgba(255,255,255,.14);" style-hover="background:rgba(255,255,255,.12); color:#fdf6e6">Terrain</a>
+          <a href="#tokens" style="flex:0 0 auto; min-height:42px; display:inline-flex; align-items:center; padding:10px 17px; border-radius:999px; font-size:14.5px; font-weight:600; white-space:nowrap; background:rgba(255,255,255,.05); color:#a9c0d1; border:1px solid rgba(255,255,255,.14);" style-hover="background:rgba(255,255,255,.12); color:#fdf6e6">Tokens</a>
+          <a href="#harbors" style="flex:0 0 auto; min-height:42px; display:inline-flex; align-items:center; padding:10px 17px; border-radius:999px; font-size:14.5px; font-weight:600; white-space:nowrap; background:rgba(255,255,255,.05); color:#a9c0d1; border:1px solid rgba(255,255,255,.14);" style-hover="background:rgba(255,255,255,.12); color:#fdf6e6">Harbors</a>
+          <a href="#rules" style="flex:0 0 auto; min-height:42px; display:inline-flex; align-items:center; padding:10px 17px; border-radius:999px; font-size:14.5px; font-weight:600; white-space:nowrap; background:rgba(255,255,255,.05); color:#a9c0d1; border:1px solid rgba(255,255,255,.14);" style-hover="background:rgba(255,255,255,.12); color:#fdf6e6">Rules</a>
+          <sc-if value="{{ ckOn }}">
+            <a href="#ck" style="flex:0 0 auto; min-height:42px; display:inline-flex; align-items:center; padding:10px 17px; border-radius:999px; font-size:14.5px; font-weight:600; white-space:nowrap; background:rgba(255,255,255,.05); color:#a9c0d1; border:1px solid rgba(255,255,255,.14);" style-hover="background:rgba(255,255,255,.12); color:#fdf6e6">Knights</a>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="max-width:1180px; margin:0 auto; padding:clamp(24px,4vw,50px) clamp(16px,4vw,56px) clamp(44px,6vw,80px);">
+
+    <div id="board" style="scroll-margin-top:70px;">
+      <div style="font-size:12px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:#e0b23c; margin-bottom:8px;">{{ kicker }}</div>
+      <h2 style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:clamp(25px,5vw,42px); line-height:1.04; letter-spacing:-0.02em; margin:0 0 7px; color:#fdf6e6;">{{ title }}</h2>
+      <p style="font-size:clamp(14.5px,1.8vw,17px); line-height:1.5; color:#a9c0d1; margin:0 0 20px; max-width:640px;">{{ subtitle }}</p>
+
+      <div style="border-radius:clamp(14px,2.4vw,22px); overflow:hidden; background:linear-gradient(165deg,#14344a,#0d2334); border:1px solid rgba(255,255,255,.1); box-shadow:0 20px 50px -18px rgba(0,0,0,.7); padding:clamp(8px,2vw,22px);">
+        <div style="position:relative; container-type:inline-size;">
+          <svg viewBox="{{ viewBox }}" style="width:100%; height:auto; display:block;">
+            <sc-for list="{{ seaHexes }}" as="h" hint-placeholder-count="18">
+              <polygon points="{{ h.points }}" fill="#16394f" stroke="rgba(140,190,220,.16)" stroke-width="1.4"></polygon>
+            </sc-for>
+            <sc-for list="{{ landHexes }}" as="h" hint-placeholder-count="19">
+              <polygon points="{{ h.points }}" fill="{{ h.fill }}" stroke="rgba(10,22,30,.5)" stroke-width="2"></polygon>
+            </sc-for>
+          </svg>
+          <sc-for list="{{ tokens }}" as="t" hint-placeholder-count="18">
+            <div style="position:absolute; left:{{ t.left }}%; top:{{ t.top }}%; width:{{ t.size }}%; aspect-ratio:1; transform:translate(-50%,-50%); border-radius:999px; background:radial-gradient(circle at 34% 28%,#fdf6e6,#e6d7b2 76%); box-shadow:0 1px 3px rgba(0,0,0,.45); display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1; font-family:'Space Grotesk',sans-serif; font-weight:700; color:{{ t.color }};">
+              <span style="font-size:{{ t.fs }}cqw; line-height:1;">{{ t.value }}</span>
+              <span style="font-size:{{ t.pipFs }}cqw; line-height:1; letter-spacing:.04em; margin-top:{{ t.pipGap }}cqw; opacity:.85;">{{ t.pips }}</span>
+            </div>
+          </sc-for>
+          <sc-for list="{{ harbors }}" as="p" hint-placeholder-count="9">
+            <div style="position:absolute; left:{{ p.left }}%; top:{{ p.top }}%; width:{{ p.size }}%; aspect-ratio:1; transform:translate(-50%,-50%); border-radius:999px; background:{{ p.fill }}; border:1.5px solid #0b1a24; display:flex; align-items:center; justify-content:center; font-family:'IBM Plex Sans',sans-serif; font-weight:700; color:#12293b; font-size:{{ p.fs }}cqw; line-height:1;">{{ p.label }}</div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="display:flex; flex-wrap:wrap; gap:9px; margin-top:16px;">
+        <button type="button" onClick="{{ rerollTerrain }}" style="flex:1 1 190px; min-height:54px; display:inline-flex; align-items:center; justify-content:center; gap:9px; padding:15px 20px; border-radius:15px; border:none; background:#e0b23c; color:#0b1a24; font-weight:700; font-size:16px; cursor:pointer; box-shadow:0 8px 22px -10px rgba(224,178,60,.75);" style-hover="background:#f2ce6a">⟳ Re-roll terrain</button>
+        <button type="button" onClick="{{ rerollNumbers }}" style="flex:1 1 190px; min-height:54px; display:inline-flex; align-items:center; justify-content:center; gap:9px; padding:15px 20px; border-radius:15px; border:1.5px solid rgba(224,178,60,.55); background:rgba(224,178,60,.12); color:#e0b23c; font-weight:700; font-size:16px; cursor:pointer;" style-hover="background:rgba(224,178,60,.22)">⟳ Re-roll numbers</button>
+        <button type="button" onClick="{{ rerollAll }}" style="flex:1 1 150px; min-height:54px; display:inline-flex; align-items:center; justify-content:center; gap:9px; padding:15px 20px; border-radius:15px; border:1px solid rgba(255,255,255,.18); background:rgba(255,255,255,.06); color:#e8ddc6; font-weight:600; font-size:15.5px; cursor:pointer;" style-hover="background:rgba(255,255,255,.13)">⟳ Re-roll both</button>
+      </div>
+      <div style="display:flex; flex-wrap:wrap; gap:9px; margin-top:9px;">
+        <button type="button" onClick="{{ toggleBalanced }}" style="flex:1 1 160px; min-height:48px; display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:12px 18px; border-radius:13px; border:1px solid rgba(255,255,255,.16); background:rgba(255,255,255,.05); color:#c5d4df; font-weight:600; font-size:15px; cursor:pointer;" style-hover="background:rgba(255,255,255,.12)">{{ balanceLabel }}</button>
+        <button type="button" onClick="{{ toggleNumbers }}" style="flex:1 1 160px; min-height:48px; display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:12px 18px; border-radius:13px; border:1px solid rgba(255,255,255,.16); background:rgba(255,255,255,.05); color:#c5d4df; font-weight:600; font-size:15px; cursor:pointer;" style-hover="background:rgba(255,255,255,.12)">{{ numbersLabel }}</button>
+      </div>
+      <p style="font-size:14px; line-height:1.5; color:#7e97aa; margin:14px 0 0;">Lay your printed hexes out to match. Balanced mode never puts two red numbers (6 · 8) side by side, and the desert never takes a token.</p>
+    </div>
+
+    <div id="terrain" style="scroll-margin-top:70px; margin-top:clamp(38px,5.5vw,68px);">
+      <h2 style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:clamp(22px,4.2vw,34px); letter-spacing:-0.02em; margin:0 0 5px; color:#fdf6e6;">Terrain hexes</h2>
+      <p style="font-size:15px; color:#7e97aa; margin:0 0 18px;">How many of each tile to pull from your set.</p>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(255px,1fr)); gap:11px;">
+        <sc-for list="{{ terrainRows }}" as="t" hint-placeholder-count="6">
+          <div style="display:flex; align-items:center; gap:14px; background:#122a3c; border:1px solid rgba(255,255,255,.09); border-radius:15px; padding:16px 18px;">
+            <div style="width:38px; height:38px; border-radius:10px; flex-shrink:0; background:{{ t.color }}; box-shadow:inset 0 0 0 1px rgba(0,0,0,.35);"></div>
+            <div style="flex:1; min-width:0;"><div style="font-size:17px; font-weight:600; color:#fdf6e6;">{{ t.name }}</div><div style="font-size:13px; color:#7e97aa;">{{ t.note }}</div></div>
+            <div style="font-family:'Space Grotesk',sans-serif; font-size:30px; font-weight:700; color:#e0b23c;">{{ t.count }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div id="tokens" style="scroll-margin-top:70px; margin-top:clamp(38px,5.5vw,68px);">
+      <h2 style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:clamp(22px,4.2vw,34px); letter-spacing:-0.02em; margin:0 0 5px; color:#fdf6e6;">Number tokens</h2>
+      <p style="font-size:15px; color:#7e97aa; margin:0 0 18px;">{{ tokenNote }}</p>
+      <div style="background:#122a3c; border:1px solid rgba(255,255,255,.09); border-radius:18px; padding:clamp(18px,2.6vw,26px);">
+        <div style="display:flex; flex-wrap:wrap; gap:16px 17px;">
+          <sc-for list="{{ tokenChips }}" as="c" hint-placeholder-count="10">
+            <div style="position:relative; width:52px; height:52px; border-radius:999px; background:radial-gradient(circle at 34% 28%,#fdf6e6,#e3d3ac 72%); display:flex; flex-direction:column; align-items:center; justify-content:center; box-shadow:0 3px 9px rgba(0,0,0,.4);">
+              <span style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:20px; line-height:1; color:{{ c.color }};">{{ c.value }}</span>
+              <span style="font-size:9px; line-height:1; margin-top:2px; letter-spacing:1px; color:{{ c.color }};">{{ c.pips }}</span>
+              <span style="position:absolute; bottom:-6px; right:-8px; background:#0b1a24; border:1px solid rgba(224,178,60,.5); color:#e0b23c; font-size:11px; font-weight:700; border-radius:999px; padding:1px 6px;">{{ c.times }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+
+    <div id="harbors" style="scroll-margin-top:70px; margin-top:clamp(38px,5.5vw,68px);">
+      <h2 style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:clamp(22px,4.2vw,34px); letter-spacing:-0.02em; margin:0 0 5px; color:#fdf6e6;">Harbors</h2>
+      <p style="font-size:15px; color:#7e97aa; margin:0 0 18px;">{{ harborNote }}</p>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(255px,1fr)); gap:11px;">
+        <div style="display:flex; align-items:center; gap:14px; background:#122a3c; border:1px solid rgba(255,255,255,.09); border-radius:15px; padding:16px 18px;">
+          <div style="width:44px; height:44px; border-radius:999px; background:#e0b23c; color:#12293b; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; flex-shrink:0;">3:1</div>
+          <div style="flex:1;"><div style="font-size:17px; font-weight:600; color:#fdf6e6;">Generic harbor</div><div style="font-size:13px; color:#7e97aa;">Any 3 alike for 1 of your choice</div></div>
+          <div style="font-family:'Space Grotesk',sans-serif; font-size:30px; font-weight:700; color:#e0b23c;">{{ genericHarbors }}</div>
+        </div>
+        <div style="display:flex; align-items:center; gap:14px; background:#122a3c; border:1px solid rgba(255,255,255,.09); border-radius:15px; padding:16px 18px;">
+          <div style="width:44px; height:44px; border-radius:999px; background:#fdf6e6; color:#12293b; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; flex-shrink:0;">2:1</div>
+          <div style="flex:1;"><div style="font-size:17px; font-weight:600; color:#fdf6e6;">Resource harbor</div><div style="font-size:13px; color:#7e97aa;">Two of its resource for 1 of your choice</div></div>
+          <div style="font-family:'Space Grotesk',sans-serif; font-size:30px; font-weight:700; color:#e0b23c;">{{ specificHarbors }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="rules" style="scroll-margin-top:70px; margin-top:clamp(38px,5.5vw,68px);">
+      <h2 style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:clamp(22px,4.2vw,34px); letter-spacing:-0.02em; margin:0 0 5px; color:#fdf6e6;">Rules refresher</h2>
+      <p style="font-size:15px; color:#7e97aa; margin:0 0 18px;">{{ rulesKicker }}</p>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:12px;">
+        <div style="background:#122a3c; border:1px solid rgba(255,255,255,.09); border-radius:16px; padding:20px 22px;"><h3 style="font-family:'Space Grotesk',sans-serif; font-size:18.5px; margin:0 0 8px; color:#e0b23c;">Turn order</h3><p style="font-size:16px; line-height:1.45; margin:0; color:#c5d4df;">Roll → everyone collects production → trade → build. Trade and build in any order, as often as you can afford.</p></div>
+        <div style="background:#122a3c; border:1px solid rgba(255,255,255,.09); border-radius:16px; padding:20px 22px;"><h3 style="font-family:'Space Grotesk',sans-serif; font-size:18.5px; margin:0 0 8px; color:#e0b23c;">Rolling a 7</h3><p style="font-size:16px; line-height:1.45; margin:0; color:#c5d4df;">Everyone holding 8+ cards discards half, rounded down. The active player moves the robber and steals 1 random card from an adjacent opponent.</p></div>
+        <div style="background:#122a3c; border:1px solid rgba(255,255,255,.09); border-radius:16px; padding:20px 22px;"><h3 style="font-family:'Space Grotesk',sans-serif; font-size:18.5px; margin:0 0 8px; color:#e0b23c;">Building costs</h3><p style="font-size:16px; line-height:1.45; margin:0; color:#c5d4df;">Road — brick + wood · Settlement — brick + wood + wheat + sheep · City — 2 wheat + 3 ore · Development card — wheat + sheep + ore.</p></div>
+        <div style="background:#122a3c; border:1px solid rgba(255,255,255,.09); border-radius:16px; padding:20px 22px;"><h3 style="font-family:'Space Grotesk',sans-serif; font-size:18.5px; margin:0 0 8px; color:#e0b23c;">Trading rates</h3><p style="font-size:16px; line-height:1.45; margin:0; color:#c5d4df;">4:1 with the bank any time. 3:1 at a generic harbor you've settled, 2:1 at a matching-resource harbor. Player trades are unrestricted.</p></div>
+        <div style="background:#122a3c; border:1px solid rgba(255,255,255,.09); border-radius:16px; padding:20px 22px;"><h3 style="font-family:'Space Grotesk',sans-serif; font-size:18.5px; margin:0 0 8px; color:#e0b23c;">Opening placement</h3><p style="font-size:16px; line-height:1.45; margin:0; color:#c5d4df;">Settlement + road in turn order, then a second pair in reverse order. The second settlement collects one resource from every adjacent hex.</p></div>
+        <div style="background:#122a3c; border:1px solid rgba(255,255,255,.09); border-radius:16px; padding:20px 22px;"><h3 style="font-family:'Space Grotesk',sans-serif; font-size:18.5px; margin:0 0 8px; color:#e0b23c;">Special cards</h3><p style="font-size:16px; line-height:1.45; margin:0; color:#c5d4df;">Longest Road — 5+ unbroken segments, 2 VP. Largest Army — first to play 3 Knights, 2 VP. Both pass to whoever beats them.</p></div>
+        <div style="background:#122a3c; border:1px solid rgba(255,255,255,.09); border-radius:16px; padding:20px 22px;"><h3 style="font-family:'Space Grotesk',sans-serif; font-size:18.5px; margin:0 0 8px; color:#e0b23c;">Development deck — 25</h3><p style="font-size:16px; line-height:1.45; margin:0; color:#c5d4df;">14 Knight · 5 Victory Point · 2 Road Building · 2 Year of Plenty · 2 Monopoly. Only a VP card may be played the turn it's bought.</p></div>
+        <div style="background:#122a3c; border:1px solid rgba(255,255,255,.09); border-radius:16px; padding:20px 22px;"><h3 style="font-family:'Space Grotesk',sans-serif; font-size:18.5px; margin:0 0 8px; color:#e0b23c;">Winning</h3><p style="font-size:16px; line-height:1.45; margin:0; color:#c5d4df;">Race to {{ vpTarget }} VP and declare on your own turn. Settlement 1 · City 2 · Longest Road 2 · Largest Army 2 · VP cards 1 each.</p></div>
+      </div>
+
+      <sc-if value="{{ isSea }}">
+        <div style="margin-top:26px;">
+          <div style="font-family:'Space Grotesk',sans-serif; font-size:19px; font-weight:700; color:#fdf6e6; margin-bottom:12px;">Seafarers adds</div>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:12px;">
+            <div style="background:#122a3c; border:1px solid rgba(255,255,255,.09); border-radius:16px; padding:20px 22px;"><h3 style="font-family:'Space Grotesk',sans-serif; font-size:18.5px; margin:0 0 8px; color:#e0b23c;">Building ships</h3><p style="font-size:16px; line-height:1.45; margin:0; color:#c5d4df;">1 wool + 1 lumber. Any hex edge where at least one side is water, extending from your settlement/city or another of your ships. Branching allowed.</p></div>
+            <div style="background:#122a3c; border:1px solid rgba(255,255,255,.09); border-radius:16px; padding:20px 22px;"><h3 style="font-family:'Space Grotesk',sans-serif; font-size:18.5px; margin:0 0 8px; color:#e0b23c;">Moving a ship</h3><p style="font-size:16px; line-height:1.45; margin:0; color:#c5d4df;">A route open at one end may move its outermost ship — once per turn, never one built that same turn. Routes closed at both ends are locked.</p></div>
+            <div style="background:#122a3c; border:1px solid rgba(255,255,255,.09); border-radius:16px; padding:20px 22px;"><h3 style="font-family:'Space Grotesk',sans-serif; font-size:18.5px; margin:0 0 8px; color:#e0b23c;">Roads meet ships</h3><p style="font-size:16px; line-height:1.45; margin:0; color:#c5d4df;">Roads and ships never join directly — a settlement or city must sit at the junction to count as one continuous route.</p></div>
+            <div style="background:#122a3c; border:1px solid rgba(255,255,255,.09); border-radius:16px; padding:20px 22px;"><h3 style="font-family:'Space Grotesk',sans-serif; font-size:18.5px; margin:0 0 8px; color:#e0b23c;">Longest trade route</h3><p style="font-size:16px; line-height:1.45; margin:0; color:#c5d4df;">Replaces Longest Road, counting roads <em>and</em> ships together. Moving a ship doesn't cost you the card if the route still qualifies.</p></div>
+            <div style="background:#122a3c; border:1px solid rgba(255,255,255,.09); border-radius:16px; padding:20px 22px;"><h3 style="font-family:'Space Grotesk',sans-serif; font-size:18.5px; margin:0 0 8px; color:#e0b23c;">The pirate ship</h3><p style="font-size:16px; line-height:1.45; margin:0; color:#c5d4df;">On a 7 move the pirate instead of the robber, to any sea hex. No ship may be built on or moved off its borders; steal 1 card from a player with an adjacent ship.</p></div>
+            <div style="background:#122a3c; border:1px solid rgba(255,255,255,.09); border-radius:16px; padding:20px 22px;"><h3 style="font-family:'Space Grotesk',sans-serif; font-size:18.5px; margin:0 0 8px; color:#e0b23c;">Gold fields</h3><p style="font-size:16px; line-height:1.45; margin:0; color:#c5d4df;">Produce on their number like any hex, but the owner picks what each card becomes. A city on gold picks two.</p></div>
+            <div style="background:#122a3c; border:1px solid rgba(255,255,255,.09); border-radius:16px; padding:20px 22px;"><h3 style="font-family:'Space Grotesk',sans-serif; font-size:18.5px; margin:0 0 8px; color:#e0b23c;">New-island bonus</h3><p style="font-size:16px; line-height:1.45; margin:0; color:#c5d4df;">The first settlement any player lands on a discovery island earns a special VP token — one per player, never lost once earned.</p></div>
+            <div style="background:#122a3c; border:1px solid rgba(255,255,255,.09); border-radius:16px; padding:20px 22px;"><h3 style="font-family:'Space Grotesk',sans-serif; font-size:18.5px; margin:0 0 8px; color:#e0b23c;">Is the map random?</h3><p style="font-size:16px; line-height:1.45; margin:0; color:#c5d4df;">Half and half. The scenario fixes island shapes, sea gaps and harbor spots; terrain and numbers inside them are shuffled — exactly what the dealer above does.</p></div>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+
+    <sc-if value="{{ ckOn }}">
+      <div id="ck" style="scroll-margin-top:70px; margin-top:clamp(38px,5.5vw,68px);">
+        <h2 style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:clamp(22px,4.2vw,34px); letter-spacing:-0.02em; margin:0 0 5px; color:#fdf6e6;">Cities &amp; Knights</h2>
+        <p style="font-size:15px; color:#7e97aa; margin:0 0 18px;">Same island — harder life. Play to 13 VP.</p>
+
+        <div style="display:flex; flex-wrap:wrap; gap:12px; margin-bottom:12px;">
+          <div style="flex:1 1 300px; background:linear-gradient(165deg,#1d4361,#12293b); border:1px solid rgba(224,178,60,.28); border-radius:16px; padding:20px 22px;">
+            <div style="font-size:12px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:#e0b23c; margin-bottom:11px;">Add to the table</div>
+            <div style="font-size:16px; line-height:1.5; color:#e8ddc6;">
+              <div style="padding:6px 0; border-bottom:1px solid rgba(255,255,255,.09);">Barbarian tile + black ship on its start space</div>
+              <div style="padding:6px 0; border-bottom:1px solid rgba(255,255,255,.09);">3 metropolis pieces and the trader cone</div>
+              <div style="padding:6px 0; border-bottom:1px solid rgba(255,255,255,.09);">Yellow + red number dice <b>and</b> the event die</div>
+              <div style="padding:6px 0; border-bottom:1px solid rgba(255,255,255,.09);">Commodity stacks face up: paper · cloth · coin</div>
+              <div style="padding:6px 0; border-bottom:1px solid rgba(255,255,255,.09);">Progress decks shuffled separately by flag colour</div>
+              <div style="padding:6px 0;">Knights, city walls and improvement boards per player</div>
+            </div>
+          </div>
+          <div style="flex:1 1 220px; background:#e0b23c; color:#0b1a24; border-radius:16px; padding:20px 22px;">
+            <div style="font-size:12px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; margin-bottom:7px; opacity:.75;">Victory target</div>
+            <div style="font-family:'Space Grotesk',sans-serif; font-size:clamp(38px,6vw,48px); font-weight:700; line-height:1;">13 VP</div>
+            <p style="font-size:15.5px; line-height:1.45; margin:11px 0 0; font-weight:500;">Metropolis 4 VP each (a plain city is 2) · Defender of Catan 1 VP each · plus VP progress cards.</p>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:12px;">
+          <div style="background:#122a3c; border:1px solid rgba(255,255,255,.09); border-radius:16px; padding:20px 22px;"><h3 style="font-family:'Space Grotesk',sans-serif; font-size:18.5px; margin:0 0 8px; color:#e0b23c;">Roll all three dice</h3><p style="font-size:16px; line-height:1.45; margin:0; color:#c5d4df;">Resolve the event die <em>first</em>, before any resources are handed out. Yellow + red then drive production as normal.</p></div>
+          <div style="background:#122a3c; border:1px solid rgba(255,255,255,.09); border-radius:16px; padding:20px 22px;"><h3 style="font-family:'Space Grotesk',sans-serif; font-size:18.5px; margin:0 0 8px; color:#e0b23c;">Event die — ship</h3><p style="font-size:16px; line-height:1.45; margin:0; color:#c5d4df;">Three faces show a ship: the barbarian fleet advances one space along its track. When it lands, the attack resolves.</p></div>
+          <div style="background:#122a3c; border:1px solid rgba(255,255,255,.09); border-radius:16px; padding:20px 22px;"><h3 style="font-family:'Space Grotesk',sans-serif; font-size:18.5px; margin:0 0 8px; color:#e0b23c;">Event die — gate</h3><p style="font-size:16px; line-height:1.45; margin:0; color:#c5d4df;">The other three faces are coloured city gates. Players whose improvement level in that colour meets the red die draw that type of progress card.</p></div>
+          <div style="background:#122a3c; border:1px solid rgba(255,255,255,.09); border-radius:16px; padding:20px 22px;"><h3 style="font-family:'Space Grotesk',sans-serif; font-size:18.5px; margin:0 0 8px; color:#e0b23c;">Commodities</h3><p style="font-size:16px; line-height:1.45; margin:0; color:#c5d4df;">Cities — never settlements — on forest, mountain and pasture pay 1 resource + 1 commodity (paper · coin · cloth). Fields and hills cities still pay 2 resources.</p></div>
+          <div style="background:#122a3c; border:1px solid rgba(255,255,255,.09); border-radius:16px; padding:20px 22px;"><h3 style="font-family:'Space Grotesk',sans-serif; font-size:18.5px; margin:0 0 8px; color:#e0b23c;">City improvements</h3><p style="font-size:16px; line-height:1.45; margin:0; color:#c5d4df;">Three tracks of five levels — Politics (paper) · Trade (cloth) · Science (coin). Level 3 unlocks a special ability; level 4 unlocks a metropolis.</p></div>
+          <div style="background:#122a3c; border:1px solid rgba(255,255,255,.09); border-radius:16px; padding:20px 22px;"><h3 style="font-family:'Space Grotesk',sans-serif; font-size:18.5px; margin:0 0 8px; color:#e0b23c;">Metropolis</h3><p style="font-size:16px; line-height:1.45; margin:0; color:#c5d4df;">First to level 4 on a track flips one city to that metropolis. One per track — a rival who climbs higher takes it. Barbarians can never destroy one.</p></div>
+          <div style="background:#122a3c; border:1px solid rgba(255,255,255,.09); border-radius:16px; padding:20px 22px;"><h3 style="font-family:'Space Grotesk',sans-serif; font-size:18.5px; margin:0 0 8px; color:#e0b23c;">Knights</h3><p style="font-size:16px; line-height:1.45; margin:0; color:#c5d4df;">Hire for 1 sheep + 1 ore on an intersection along your roads. Activate with 1 wheat. Promote basic → strong → mighty for 1 sheep + 1 ore each. Two of each per player.</p></div>
+          <div style="background:#122a3c; border:1px solid rgba(255,255,255,.09); border-radius:16px; padding:20px 22px;"><h3 style="font-family:'Space Grotesk',sans-serif; font-size:18.5px; margin:0 0 8px; color:#e0b23c;">Barbarian attack</h3><p style="font-size:16px; line-height:1.45; margin:0; color:#c5d4df;">Attack strength = every city and metropolis on the board. Defence = combined strength of all <em>active</em> knights. Lose and the weakest contributor drops a city; win and the top contributor takes Defender of Catan.</p></div>
+          <div style="background:#122a3c; border:1px solid rgba(255,255,255,.09); border-radius:16px; padding:20px 22px;"><h3 style="font-family:'Space Grotesk',sans-serif; font-size:18.5px; margin:0 0 8px; color:#e0b23c;">City walls</h3><p style="font-size:16px; line-height:1.45; margin:0; color:#c5d4df;">2 brick each, one per city, three per player. Every wall raises your 7-discard limit by 2 — up to 13 cards. No protection from robber or barbarians.</p></div>
+          <div style="background:#122a3c; border:1px solid rgba(255,255,255,.09); border-radius:16px; padding:20px 22px;"><h3 style="font-family:'Space Grotesk',sans-serif; font-size:18.5px; margin:0 0 8px; color:#e0b23c;">The robber, rethought</h3><p style="font-size:16px; line-height:1.45; margin:0; color:#c5d4df;">It moves only on a Bishop progress card or a failed barbarian defence — not on every 7. You still discard on a 7, and an active knight can chase it off for free.</p></div>
+          <div style="background:#122a3c; border:1px solid rgba(255,255,255,.09); border-radius:16px; padding:20px 22px;"><h3 style="font-family:'Space Grotesk',sans-serif; font-size:18.5px; margin:0 0 8px; color:#e0b23c;">Progress cards</h3><p style="font-size:16px; line-height:1.45; margin:0; color:#c5d4df;">Three decks — Politics (yellow) · Trade (green) · Science (blue). They replace the base development deck entirely. Hold 4 between turns, 5 during your own.</p></div>
+          <div style="background:#122a3c; border:1px solid rgba(255,255,255,.09); border-radius:16px; padding:20px 22px;"><h3 style="font-family:'Space Grotesk',sans-serif; font-size:18.5px; margin:0 0 8px; color:#e0b23c;">Stacked with Seafarers</h3><p style="font-size:16px; line-height:1.45; margin:0; color:#c5d4df;">The two combine. Gold fields pay resources only — never commodities — and a shipping route counts as closed at a knight as well as a settlement.</p></div>
+        </div>
+      </div>
+    </sc-if>
+
+    <div style="margin-top:clamp(40px,6vw,80px); padding-top:26px; border-top:1px solid rgba(255,255,255,.1);">
+      <div style="font-family:'Space Grotesk',sans-serif; font-size:18px; font-weight:700; color:#fdf6e6; margin-bottom:8px;">Built for a printed magnetic set</div>
+      <p style="font-size:14px; line-height:1.5; margin:0 0 14px; color:#7e97aa; max-width:640px;">Land hexes are dealt fresh each roll — use the board for placement and the panels for how many of each tile to pull. Seafarers component counts vary slightly by edition; cross-check the scenario card in your box.</p>
+      <div style="font-size:12.5px; color:#5f7789; letter-spacing:.08em; text-transform:uppercase;">Ervin's Catan Companion · Unofficial fan reference</div>
+    </div>
+
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 430, &quot;height&quot;: 932}}">
+class Component extends DCLogic {
+  state = { players: '4', game: 'base', ck: false, tSeed: 11, nSeed: 23, balanced: true, showNumbers: true };
+
+  R = 30;
+
+  colors = {
+    wood:   { fill: '#2f6b3f', name: 'Forest — Wood',  note: 'lumber' },
+    wheat:  { fill: '#d9a83a', name: 'Fields — Wheat', note: 'grain' },
+    sheep:  { fill: '#93bd5c', name: 'Pasture — Sheep', note: 'wool' },
+    brick:  { fill: '#b5502e', name: 'Hills — Brick',  note: 'clay' },
+    ore:    { fill: '#6b7d8c', name: 'Mountains — Ore', note: 'stone' },
+    gold:   { fill: '#e6bb43', name: 'Gold field',     note: 'any resource you choose' },
+    desert: { fill: '#ddc9a3', name: 'Desert',         note: 'no production · robber starts here' }
+  };
+
+  cfg() {
+    const row = (r, n) => { const o = []; const s = -(n - 1) / 2; for (let i = 0; i < n; i++) o.push([r, s + i]); return o; };
+    const base4 = [].concat(row(1,3), row(2,4), row(3,5), row(4,4), row(5,3));
+    const base56 = [].concat(row(1,3), row(2,4), row(3,5), row(4,6), row(5,5), row(6,4), row(7,3));
+    const mainC = [[2,-1],[2,0],[2,1],[3,-1.5],[3,-0.5],[3,0.5],[3,1.5],[4,-2],[4,-1],[4,0],[4,1],[4,2],[5,-1.5],[5,-0.5],[5,0.5]];
+    const islesC = [[0,2],[0,3],[1,2.5],[7,-2.5],[7,-1.5],[8,-2]];
+    const mainD = [[2,-1],[2,0],[2,1],[3,-1.5],[3,-0.5],[3,0.5],[3,1.5],[4,-2],[4,-1],[4,0],[4,1],[4,2],[5,-2.5],[5,-1.5],[5,-0.5],[5,0.5],[5,1.5],[6,-1],[6,0],[6,1]];
+    const islesD = [[0,2],[0,3],[1,2.5],[1,3.5],[2,3],[7,-3.5],[7,-2.5],[8,-3],[8,-2],[8,-1]];
+    const nums18 = [2,3,3,4,4,5,5,6,6,8,8,9,9,10,10,11,11,12];
+    const nums28 = [2,2,3,3,3,4,4,4,5,5,5,6,6,6,8,8,8,9,9,9,10,10,10,11,11,11,12,12];
+    return {
+      base4: {
+        kicker: 'Base game · 3–4 players', title: 'The classic island',
+        subtitle: 'Nineteen land hexes in the 3–4–5–4–3 shape, ringed by eighteen sea frame pieces and nine harbors.',
+        land: base4, depth: 1, vp: 10,
+        terrain: { wood: 4, wheat: 4, sheep: 4, brick: 3, ore: 3, desert: 1 },
+        numbers: nums18,
+        harbors: ['3:1','2:1','3:1','2:1','3:1','2:1','3:1','2:1','2:1'],
+        tokenNote: 'One token per land hex except the desert — 18 in all. Red 6 and 8 are the high-frequency rolls.',
+        harborNote: 'Harbor positions are fixed in the standard layout — shuffle the tokens face down only if your group prefers random ports.'
+      },
+      base56: {
+        kicker: 'Base game · 5–6 player extension', title: 'The crowded island',
+        subtitle: 'Thirty land hexes in a stretched 3–4–5–6–5–4–3 island, with eleven harbors around a wider frame.',
+        land: base56, depth: 1, vp: 10,
+        terrain: { wood: 6, wheat: 6, sheep: 6, brick: 5, ore: 5, desert: 2 },
+        numbers: nums28,
+        harbors: ['3:1','2:1','3:1','2:1','2:1','3:1','2:1','3:1','2:1','3:1','2:1'],
+        tokenNote: 'The extension supplies a complete 28-token set for the combined board — don\u2019t mix in the base game\u2019s 18.',
+        harborNote: 'The base nine harbors plus two from the extension: one more generic and a second wool harbor.'
+      },
+      sea4: {
+        kicker: 'Seafarers · Heading for New Shores · 3–4 players', title: 'Main island + two discoveries',
+        subtitle: 'A fifteen-hex mainland with two three-hex discovery islands across open water. Ships, gold fields, and the pirate come into play.',
+        land: mainC.concat(islesC), main: mainC, depth: 2, vp: 13,
+        terrain: { wood: 4, wheat: 4, sheep: 4, brick: 3, ore: 3, gold: 2, desert: 1 },
+        numbers: nums18.concat([4,10]),
+        harbors: ['3:1','2:1','3:1','2:1','2:1','3:1','2:1','2:1'],
+        tokenNote: 'Twenty hexes take numbers — the base 18-token set plus two more mid-range tokens from your Seafarers set.',
+        harborNote: 'All eight harbors sit on the main island coast. Shuffle them face down and deal them into the marked spots.'
+      },
+      sea56: {
+        kicker: 'Seafarers · Heading for New Shores · 5–6 players', title: 'The wider archipelago',
+        subtitle: 'A twenty-hex mainland plus two five-hex discovery islands, three gold fields, and a deeper sea to sail.',
+        land: mainD.concat(islesD), main: mainD, depth: 2, vp: 13,
+        terrain: { wood: 6, wheat: 6, sheep: 5, brick: 4, ore: 4, gold: 3, desert: 2 },
+        numbers: nums28,
+        harbors: ['3:1','2:1','3:1','2:1','2:1','3:1','2:1','2:1','3:1','2:1'],
+        tokenNote: 'Twenty-eight hexes take numbers — exactly the 5–6 player token set, dealt across mainland and islands alike.',
+        harborNote: 'Around ten harbors, all on the main island coast. Counts shift a little between editions — check your scenario card.'
+      }
+    };
+  }
+
+  boardKey() { return this.state.game + (this.state.players === '4' ? '4' : '56'); }
+
+  rng(seed) { let a = seed >>> 0; return () => { a += 0x6D2B79F5; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+
+  shuffled(arr, rand) { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rand() * (i + 1)); const t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+
+  neighbors(r, c) { return [[r, c - 1], [r, c + 1], [r - 1, c - 0.5], [r - 1, c + 0.5], [r + 1, c - 0.5], [r + 1, c + 0.5]]; }
+
+  ringCells(r, c, depth) {
+    const out = []; const q0 = c - r / 2;
+    for (let dq = -depth; dq <= depth; dq++) for (let dr = -depth; dr <= depth; dr++) {
+      const ds = -dq - dr;
+      if (Math.abs(dq) + Math.abs(dr) + Math.abs(ds) > depth * 2) continue;
+      const rr = r + dr; out.push([rr, (q0 + dq) + rr / 2]);
+    }
+    return out;
+  }
+
+  hexPoints(x, y) {
+    const R = this.R, p = [];
+    for (let k = 0; k < 6; k++) { const a = Math.PI / 180 * (60 * k - 90); p.push((x + R * Math.cos(a)).toFixed(1) + ',' + (y + R * Math.sin(a)).toFixed(1)); }
+    return p.join(' ');
+  }
+
+  deal(cfg) {
+    const key = (r, c) => r + '|' + c;
+    const isRed = n => n === 6 || n === 8;
+    const bag = [];
+    Object.keys(cfg.terrain).forEach(k => { for (let i = 0; i < cfg.terrain[k]; i++) bag.push(k); });
+
+    // terrain depends only on tSeed, so re-rolling numbers leaves the map alone
+    const terrain = {};
+    const t = this.shuffled(bag, this.rng(this.state.tSeed));
+    cfg.land.forEach((cell, i) => { terrain[key(cell[0], cell[1])] = t[i]; });
+
+    const numberedCells = cfg.land.filter(cell => terrain[key(cell[0], cell[1])] !== 'desert');
+    const attempts = this.state.balanced ? 300 : 1;
+    let numbers = null;
+    for (let a = 0; a < attempts; a++) {
+      const nums = this.shuffled(cfg.numbers, this.rng(this.state.nSeed + a * 7919));
+      const cand = {};
+      numberedCells.forEach((cell, i) => { cand[key(cell[0], cell[1])] = nums[i]; });
+      if (!this.state.balanced) { numbers = cand; break; }
+      let ok = true;
+      for (const cell of numberedCells) {
+        if (!isRed(cand[key(cell[0], cell[1])])) continue;
+        for (const nb of this.neighbors(cell[0], cell[1])) {
+          if (isRed(cand[key(nb[0], nb[1])])) { ok = false; break; }
+        }
+        if (!ok) break;
+      }
+      if (ok || a === attempts - 1) { numbers = cand; break; }
+    }
+    return { terrain, numbers };
+  }
+
+  board() {
+    const cfg = this.cfg()[this.boardKey()];
+    const R = this.R, W = Math.sqrt(3) * R, VS = 1.5 * R;
+    const key = (r, c) => r + '|' + c;
+    const landSet = new Set(cfg.land.map(c => key(c[0], c[1])));
+    const mainArr = cfg.main || cfg.land;
+    const mainSet = new Set(mainArr.map(c => key(c[0], c[1])));
+
+    const seaMap = new Map();
+    cfg.land.forEach(cell => this.ringCells(cell[0], cell[1], cfg.depth).forEach(s => {
+      const kk = key(s[0], s[1]);
+      if (!landSet.has(kk) && !seaMap.has(kk)) seaMap.set(kk, s);
+    }));
+    const sea = Array.from(seaMap.values());
+
+    let cx = 0, cy = 0;
+    mainArr.forEach(c => { cx += c[1] * W; cy += c[0] * VS; });
+    cx /= mainArr.length; cy /= mainArr.length;
+    const cands = sea.filter(s => this.neighbors(s[0], s[1]).some(n => mainSet.has(key(n[0], n[1]))))
+      .map(s => ({ r: s[0], c: s[1], ang: Math.atan2(s[0] * VS - cy, s[1] * W - cx) }))
+      .sort((a, b) => a.ang - b.ang);
+    const harborCells = []; const used = new Set();
+    for (let i = 0; i < cfg.harbors.length; i++) {
+      let idx = Math.round(i * cands.length / cfg.harbors.length) % cands.length;
+      let guard = 0;
+      while (used.has(idx) && guard++ < cands.length) idx = (idx + 1) % cands.length;
+      used.add(idx);
+      if (cands[idx]) harborCells.push({ cell: cands[idx], type: cfg.harbors[i] });
+    }
+
+    let minX = 1e9, maxX = -1e9, minY = 1e9, maxY = -1e9;
+    cfg.land.concat(sea).forEach(c => {
+      const x = c[1] * W, y = c[0] * VS;
+      minX = Math.min(minX, x - W / 2); maxX = Math.max(maxX, x + W / 2);
+      minY = Math.min(minY, y - R); maxY = Math.max(maxY, y + R);
+    });
+    const pad = R * 0.7, ox = -minX + pad, oy = -minY + pad;
+    const vw = (maxX - minX) + pad * 2, vh = (maxY - minY) + pad * 2;
+
+    const { terrain, numbers } = this.deal(cfg);
+    const show = this.state.showNumbers;
+
+    const pct = v => (v / vw * 100);
+    const landHexes = [], tokens = [];
+    cfg.land.forEach(cell => {
+      const x = cell[1] * W + ox, y = cell[0] * VS + oy;
+      const kind = terrain[key(cell[0], cell[1])];
+      const n = numbers[key(cell[0], cell[1])];
+      landHexes.push({ points: this.hexPoints(x, y), fill: this.colors[kind].fill });
+      if (show && n) {
+        const red = n === 6 || n === 8;
+        tokens.push({
+          left: pct(x).toFixed(2),
+          top: (y / vh * 100).toFixed(2),
+          size: pct(R * 0.94).toFixed(2),
+          fs: pct(R * 0.52).toFixed(2),
+          pipFs: pct(R * 0.2).toFixed(2),
+          pipGap: pct(R * 0.05).toFixed(2),
+          value: String(n),
+          pips: this.pipsFor(n),
+          color: red ? '#c0392b' : '#1d2a33'
+        });
+      }
+    });
+
+    const seaHexes = sea.map(c => ({ points: this.hexPoints(c[1] * W + ox, c[0] * VS + oy) }));
+
+    const harbors = harborCells.map(h => {
+      const x = h.cell.c * W + ox, y = h.cell.r * VS + oy;
+      return {
+        left: pct(x).toFixed(2), top: (y / vh * 100).toFixed(2),
+        size: pct(R * 1.1).toFixed(2), fs: pct(R * 0.38).toFixed(2),
+        fill: h.type === '3:1' ? '#e0b23c' : '#fdf6e6',
+        label: h.type
+      };
+    });
+
+    return { cfg, landHexes, seaHexes, harbors, tokens, viewBox: '0 0 ' + vw.toFixed(0) + ' ' + vh.toFixed(0) };
+  }
+
+  pipsFor(n) {
+    const map = { 2: '•', 12: '•', 3: '••', 11: '••', 4: '•••', 10: '•••', 5: '••••', 9: '••••', 6: '•••••', 8: '•••••' };
+    return map[n] || '';
+  }
+
+  opt(active, label, pick) {
+    return {
+      label, pick,
+      bg: active ? '#e0b23c' : 'rgba(255,255,255,.05)',
+      fg: active ? '#0b1a24' : '#a9c0d1',
+      bd: active ? '#e0b23c' : 'rgba(255,255,255,.16)'
+    };
+  }
+
+  renderVals() {
+    const s = this.state;
+    const b = this.board();
+    const meta = b.cfg;
+
+    const terrainOrder = ['wood', 'wheat', 'sheep', 'brick', 'ore', 'gold', 'desert'];
+    const terrainRows = terrainOrder.filter(t => meta.terrain[t]).map(t => ({
+      color: this.colors[t].fill, name: this.colors[t].name, note: this.colors[t].note, count: meta.terrain[t]
+    }));
+
+    const counts = {};
+    meta.numbers.forEach(n => { counts[n] = (counts[n] || 0) + 1; });
+    const tokenChips = Object.keys(counts).map(Number).sort((x, y) => x - y).map(v => ({
+      value: v, times: '\u00d7' + counts[v], pips: this.pipsFor(v),
+      color: (v === 6 || v === 8) ? '#c0392b' : '#1d2a33'
+    }));
+
+    const gen = meta.harbors.filter(h => h === '3:1').length;
+    const isSea = s.game === 'sea';
+
+    return {
+      playerOpts: [
+        this.opt(s.players === '4', '3–4', () => this.setState({ players: '4' })),
+        this.opt(s.players === '56', '5–6', () => this.setState({ players: '56' }))
+      ],
+      gameOpts: [
+        this.opt(s.game === 'base', 'Catan', () => this.setState({ game: 'base' })),
+        this.opt(s.game === 'sea', 'Seafarers', () => this.setState({ game: 'sea' }))
+      ],
+      ckOpts: [
+        this.opt(!s.ck, 'Off', () => this.setState({ ck: false })),
+        this.opt(s.ck, 'On', () => this.setState({ ck: true }))
+      ],
+      configLabel: (isSea ? 'Seafarers' : 'Catan') + ' · ' + (s.players === '4' ? '3–4P' : '5–6P') + (s.ck ? ' · C&K' : ''),
+      ckOn: s.ck, isSea,
+      kicker: meta.kicker, title: meta.title, subtitle: meta.subtitle,
+      rulesKicker: (isSea ? 'Seafarers builds on every base rule' : 'Base game essentials') + (s.ck ? ' — Cities & Knights changes are in the Knights section' : ''),
+      landTotal: meta.land.length,
+      numTotal: meta.numbers.length,
+      harborTotal: meta.harbors.length,
+      vpTarget: s.ck ? 13 : meta.vp,
+      viewBox: b.viewBox, landHexes: b.landHexes, seaHexes: b.seaHexes, harbors: b.harbors, tokens: b.tokens,
+      terrainRows, tokenChips,
+      tokenNote: meta.tokenNote, harborNote: meta.harborNote,
+      genericHarbors: gen, specificHarbors: meta.harbors.length - gen,
+      balanceLabel: s.balanced ? '⚖ Balanced' : '🎲 Wild',
+      numbersLabel: s.showNumbers ? '# Numbers on' : '# Numbers off',
+      rerollTerrain: () => this.setState({ tSeed: Math.floor(Math.random() * 99991) + 1 }),
+      rerollNumbers: () => this.setState({ nSeed: Math.floor(Math.random() * 99991) + 1 }),
+      rerollAll: () => this.setState({ tSeed: Math.floor(Math.random() * 99991) + 1, nSeed: Math.floor(Math.random() * 99991) + 1 }),
+      toggleBalanced: () => this.setState(p => ({ balanced: !p.balanced })),
+      toggleNumbers: () => this.setState(p => ({ showNumbers: !p.showNumbers }))
+    };
+  }
+}
+</script>
+</body>
+</html>
